@@ -1,7 +1,0 @@
-clearArray = (arr) ->
-    arr.splice 0, arr.length
-
-
-arr1 = [1,4,5,a,c]
-
-clearArray arr1

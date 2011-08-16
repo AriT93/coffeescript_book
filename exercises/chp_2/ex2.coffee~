@@ -1,0 +1,2 @@
+run = (func, args...) ->
+    func args

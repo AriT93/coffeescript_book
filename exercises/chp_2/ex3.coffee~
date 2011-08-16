@@ -1,0 +1,10 @@
+#cheated on this a looked at the end, wasn't clicking
+
+
+return abortMission warning if warning?
+return abortMission(warining) if warning?
+
+if warning? then return abortMission warning
+if warning? then return abortMission(warning)
+
+return abortMission(warning if warning?)

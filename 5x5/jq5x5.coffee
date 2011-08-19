@@ -15,13 +15,21 @@ newGame = ->
         $("#p#{player.num}score").html 0
     showMessage 'firstTile'
 
+showMessage = (messageType) ->
+  switch messageType
+    when 'firstTile'
+      messageHtml = "Please select your first tile."
+    when 'secondTile'
+      messageHtml = "Please select a second tile."
+  $('#message').html messageHtml
+
 
 drawTiles = ->
     gridHtml = ''
     for x in [0...grid.tiles.length]
         gridHtml += '<ul>'
         for y in [0...grid.tiles.length]
-            gridHtml += "<li id='tile#{x}_#{y}'>#{grid.tiles[x][y]</li>"
+            gridHtml += "<li id='tile#{x}_#{y}'>#{grid.tiles[x][y]}</li>"
         gridHtml += '</ul>'
     $('#grid').html gridHtml
 
@@ -54,9 +62,9 @@ doMove = ->
     else
         $notice = $("""
             <p class="notice">
-                #{currPlayer} formed the following ${newWords.length} word(s): <br />
+                #{currPlayer.name} formed the following #{newWords.length} word(s): <br />
                 <b>#{newWords.join(', ')}</b><br />
-                earning <b> #{moveScore / newWords.length}x#{newWords.length = #{moveScore}</b> points!
+                earning <b> #{moveScore / newWords.length}x#{newWords.length} = #{moveScore}</b> points!
             </p>
             """)
         showThenFade $notice

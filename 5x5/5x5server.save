@@ -1,21 +1,20 @@
 {Game} = require './Game'
 
 game = new Game
-console.log "blah"
 idClientMap = {}
 
 connect = require 'connect'
 
 app = connect.createServer(
-    connect.compiler(src: __dirname + '/client' , enable: ['coffeescript']),
-    connect.static(__dirname + '/client'),
-    connect.errorHandler dumpException: true, showStack: true
-    )
+  connect.compiler(src: __dirname + '/client', enable: ['coffeescript']),
+  connect.static(__dirname + '/client'),
+  connect.errorHandler dumpExceptions: true, showStack: true
+)
 
 
 port = 3000
 app.listen port
-console.log "Browse to http://localhost:$#{port} to play"
+console.log "Browse to http://localhost:#{port} to play"
 
 io = require 'socket.io'
 socket = io.listen app
@@ -25,7 +24,6 @@ socket.on 'connection',  (client) ->
         client.on 'disconnect', -> removeFromGame client
     else
         client.send 'full'
-
 
 assignToGame = (client) ->
     idClientMap[client.sessionId] = client
@@ -39,11 +37,11 @@ removeFromGame = (client) ->
     game.removePlayer client.sessionId
 
 welcomePlayers = ->
-    players = [game.player1, game.player2]
-    info = {players, tiles: game.grid.tiles, currPlayerNum: game.currPlayer.num}
-    for player in players
-        playerInfo = extend {}, info, {yourNum: player.num}
-        idClientMap[player.id].send "welcome: ${JSON.stringify playerInfo}"
+  players = [game.player1, game.player2]
+  info = {players, tiles: game.grid.tiles, currPlayerNum: game.currPlayer.num}
+  for player in players
+    playerInfo = extend {}, info, {yourNum: player.num}
+    idClientMap[player.id].send "welcome:#{JSON.stringify playerInfo}"
 
 handleMessage = (client, message) ->
     {type, content} = typeAndContent message
@@ -59,7 +57,7 @@ typeAndContent = (message) ->
     [ignore, type, content] = message.match /(.*?):(.*)/
     {type,content}
 
-extend = (a,others...) ->
-    for o in others
-        a[key] = val for key, val of 0
-    a
+extend = (a, others...) ->
+  for o in others
+    a[key] = val for key, val of o
+  a

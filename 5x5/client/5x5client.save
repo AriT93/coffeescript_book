@@ -1,21 +1,21 @@
 socket = tiles = selectedCoordinates = myNum = myTurn = mull
 
 startTurn = ->
-    myTurn - true
-    showMessage 'firstTile'
+  myTurn = true
+  showMessage 'firstTile'
 
 endTurn = ->
-    selectedCoordinates = null
-    myTurn = false
-    showMessage 'waitForMove'
+  selectedCoordinates = null
+  myTurn = false
+  showMessage 'waitForMove'
 
 drawTiles = ->
     gridHtml = ''
-    for x in [0...tiles.length]
-        gridHtml += '<ul>'
-        for y in [0...tiles.length]
-            gridHtml += "<li id='tile#{x}_#{y}'>#{tiles[x][y]}</li>"
-        gridHtml += '</ul>'
+    for y in [0...tiles.length]
+      gridHtml += '<ul>'
+      for x in [0...tiles.length]
+        gridHtml += "<li id='tile#{x}_#{y}'>#{tiles[x][y]}</li>"
+      gridHtml += '</ul>'
     $('#grid').html gridHtml
 
 showMessage = (messageType) ->
@@ -31,9 +31,9 @@ showMessage = (messageType) ->
   $('#message').html messageHtml
 
 showThenFade = ($elem) ->
-    $elem.insertAfter $('#grid')
-    animationTarget = opacity: 0, height: 0, padding: 0
-    $elem.delay(5000).animate animationTarget, 500, -> $elem.remove()
+  $elem.insertAfter $('#grid')
+  animationTarget = opacity: 0, height: 0, padding: 0
+  $elem.delay(5000).animate animationTarget, 500, -> $elem.remove()
 
 tileClick = ->
   return unless myTurn
@@ -55,7 +55,6 @@ tileClick = ->
       selectedCoordinates.y2 = y
       socket.send "move:#{JSON.stringify selectedCoordinates}"
       endTurn()
-
 
 swapTiles = ({x1, y1, x2, y2}) ->
   [tiles[x1][y1], tiles[x2][y2]] = [tiles[x2][y2], tiles[x1][y1]]
@@ -89,21 +88,20 @@ startGame = (players, currPlayerNum) ->
 
 
 showMoveResult = (player, swapCoordinates, moveScore, newWords) ->
-    $("#p#{player.num}score").html player.score
-    $notice = $('<p clase="notice"></p>')
-    if moveScore is 0
-        $notice.html "#{player.name} formed no words with this turn"
-    else
-        $notice.html """
-            #{player.name} formed the following #{newWords.length} words(s):</br />
-            <b>#{newWords.join(', ')}</b><br />
-            earning <b>#{moveScore / newWords.length}x#{newWords.length}
-            = #{moveScore}</b> points!
-        """
-    showThenFade $notice
-    swapTiles swapCoordinates
-    if player.num isnt myNum then startTurn()
-
+  $("#p#{player.num}score").html player.score
+  $notice = $('<p class="notice"></p>')
+  if moveScore is 0
+    $notice.html "#{player.name} formed no words this turn."
+  else
+    $notice.html """
+      #{player.name} formed the following #{newWords.length} word(s):<br />
+      <b>#{newWords.join(', ')}</b><br />
+      earning <b>#{moveScore / newWords.length}x#{newWords.length}
+      = #{moveScore}</b> points!
+    """
+  showThenFade $notice
+  swapTiles swapCoordinates
+  if player.num isnt myNum then startTurn()
 
 $(document).ready ->
     $('#grid li').live 'click', tileClick

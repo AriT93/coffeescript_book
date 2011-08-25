@@ -1,7 +1,7 @@
 {Dictionary} = require './Dictionary'
-{Grid} = require './Grid'
-{OWL2} = require './OWL2'
-{Player} = require './Player'
+{Grid}       = require './Grid'
+{OWL2}       = require './OWL2'
+{Player}     = require './Player'
 
 class Game
   constructor: ->
